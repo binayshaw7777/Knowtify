@@ -1,8 +1,7 @@
 package presentation.setting
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BackHand
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,22 +22,16 @@ fun Setting() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Home") },
+                title = { Text("Setting") },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-                actions = {
-                    IconButton(onClick = {  }) {
-                        Icon(Icons.Default.Settings, contentDescription = "Goto Settings Screen")
-                    }
-                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.BackHand, contentDescription = "Go back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Go back")
                     }
                 }
             )
         }
     ) {
-
 
     }
 }
