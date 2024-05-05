@@ -3,8 +3,10 @@ package presentation.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -55,14 +57,16 @@ fun HomeScreen() {
         Column(
             modifier = Modifier.fillMaxSize().background(Color(0xFFEEF1F6))
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp, vertical = 20.dp),
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             LazyColumn(
+                modifier = Modifier.weight(9f),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                repeat(5) {
+                repeat(10) {
                     item {
                         SearchedItem(
                             it,
@@ -74,7 +78,10 @@ fun HomeScreen() {
                     }
                 }
             }
+
+
             SearchBar(
+                modifier = Modifier.weight(1f).wrapContentSize(),
                 query = searchBarQuery,
                 onQueryChange = { searchBarQuery = it },
                 active = isSearchActive,
