@@ -11,6 +11,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
+//    initializeKoin()
+
     MaterialTheme {
         MainContent()
     }

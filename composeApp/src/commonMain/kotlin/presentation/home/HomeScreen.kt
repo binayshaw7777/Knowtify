@@ -21,17 +21,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
 import navigation.LocalNavHost
 import presentation.component.SearchedItem
+import repository.HomeRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +45,14 @@ fun HomeScreen() {
     val navController = LocalNavHost.current
     var searchBarQuery by rememberSaveable { mutableStateOf("") }
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
+
+    val repository by remember { mutableStateOf(HomeRepository()) }
+    val homeViewModel: HomeViewModel = viewModel { HomeViewModel(repository) }
+    val uiState = homeViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState) {
+        Logger.d("Dictionary Response: ${uiState.value}")
+    }
 
     Scaffold(
         topBar = {
@@ -87,8 +100,15 @@ fun HomeScreen() {
                 active = isSearchActive,
                 onActiveChange = { isSearchActive = false },
                 colors = SearchBarDefaults.colors(Color.White),
-                onSearch = { Logger.d("Clicked on search") }
-            ) {}
+                onSearch = {
+                    Logger.d("Clicked on search")
+                    homeViewModel.getDictionary(searchBarQuery)
+                    searchBarQuery = ""
+                }
+            ) {
+//                homeViewModel.getDictionary(searchBarQuery)
+//                searchBarQuery = ""
+            }
         }
     }
 }
