@@ -2,7 +2,6 @@ package data.network
 
 
 import data.response.Dictionary
-import data.response.DictionaryResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout

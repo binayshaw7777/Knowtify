@@ -107,6 +107,7 @@ fun HomeScreen() {
                         searchBarQuery = ""
                     }
                 },
+                placeholder = { Text("Search any word") },
                 trailingIcon = {
                     if (searchBarQuery.isEmpty()) {
                         IconButton(onClick = {
