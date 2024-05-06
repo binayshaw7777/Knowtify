@@ -3,17 +3,17 @@ package presentation.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -102,13 +102,29 @@ fun HomeScreen() {
                 colors = SearchBarDefaults.colors(Color.White),
                 onSearch = {
                     Logger.d("Clicked on search")
-                    homeViewModel.getDictionary(searchBarQuery)
-                    searchBarQuery = ""
+                    if (searchBarQuery.isNotEmpty()) {
+                        homeViewModel.getDictionary(searchBarQuery)
+                        searchBarQuery = ""
+                    }
+                },
+                trailingIcon = {
+                    if (searchBarQuery.isEmpty()) {
+                        IconButton(onClick = {
+                            // Speech to text
+                            Logger.d("Recording audio")
+                        }) {
+                            Icon(Icons.Default.Mic, contentDescription = "Mic")
+                        }
+                    } else {
+                        IconButton(onClick = {
+                            homeViewModel.getDictionary(searchBarQuery)
+                            searchBarQuery = ""
+                        }) {
+                            Icon(Icons.Default.Send, contentDescription = "Send")
+                        }
+                    }
                 }
-            ) {
-//                homeViewModel.getDictionary(searchBarQuery)
-//                searchBarQuery = ""
-            }
+            ) {}
         }
     }
 }

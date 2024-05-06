@@ -21,7 +21,7 @@ data class License(
 @Serializable
 data class Phonetics(
     @SerialName("audio") var audio: String,
-    @SerialName("sourceUrl") var sourceUrl: String,
+    @SerialName("sourceUrl") var sourceUrl: String? = null,
 )
 
 @Serializable
@@ -37,9 +37,4 @@ data class Meanings(
     @SerialName("definitions") var definitions: List<Definitions>,
     @SerialName("synonyms") var synonyms: List<String>,
     @SerialName("antonyms") var antonyms: List<String>
-)
-
-@Serializable
-data class DictionaryResponse(
-    val dictionary: List<Dictionary>
 )
