@@ -13,19 +13,36 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
+import data.database.DictionaryDao
 import navigation.LocalNavHost
+import presentation.home.HomeViewModel
+import repository.DetailRepository
+import repository.HomeRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    meaningId: Int
+    meaningId: Int,
+    dictionaryDao: DictionaryDao
 ) {
 
     val navController = LocalNavHost.current
+    val repository by remember { mutableStateOf(DetailRepository()) }
+    val detailViewModel: DetailViewModel = viewModel { DetailViewModel(repository, dictionaryDao) }
 
+    val uiState by detailViewModel.wordMeaning.collectAsState()
+
+    LaunchedEffect(Unit) {
+        detailViewModel.getWordMeaningFromId(meaningId)
+    }
 
     Scaffold(
         topBar = {
@@ -44,10 +61,10 @@ fun DetailScreen(
         ) {
 
             LaunchedEffect(Unit) {
-                Logger.d("Word Meaning: $meaningId")
+                Logger.d("Word Meaning: $uiState")
             }
 
-            Text(text = "Detail Screen: $meaningId")
+            Text(text = "Detail Screen: ${uiState?.word}")
         }
     }
 }

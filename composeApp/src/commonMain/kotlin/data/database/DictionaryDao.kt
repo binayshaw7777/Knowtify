@@ -13,6 +13,9 @@ interface DictionaryDao {
     @Upsert
     suspend fun insert(dictionary: Dictionary)
 
+    @Query("SELECT * FROM dictionary WHERE id = :id")
+    fun getDictionaryById(id: Int): Flow<Dictionary>
+
     @Delete
     suspend fun delete(dictionary: Dictionary)
 

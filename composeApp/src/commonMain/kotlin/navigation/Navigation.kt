@@ -47,7 +47,7 @@ fun Navigation(dictionaryDao: DictionaryDao) {
             ) {
 
                 composable(route = Screens.Home.route) {
-                    HomeScreen(dictionaryDao)
+                    HomeScreen(dictionaryDao = dictionaryDao)
                 }
 
                 composable(route = Screens.Setting.route) {
@@ -61,7 +61,7 @@ fun Navigation(dictionaryDao: DictionaryDao) {
 
                     val meaningId: Int = backStackEntry.value?.arguments?.getInt("meaningId") ?: -1
 
-                    DetailScreen(meaningId = meaningId)
+                    DetailScreen(meaningId = meaningId, dictionaryDao = dictionaryDao)
                 }
             }
         }
