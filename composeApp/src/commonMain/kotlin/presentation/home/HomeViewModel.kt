@@ -17,9 +17,13 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         MutableStateFlow(null)
     val uiState: StateFlow<Dictionary?> get() = _uiState
 
+    fun setUiState(dictionary: Dictionary?)  {
+        _uiState.value = dictionary
+    }
+
     fun getDictionary(word: String) = viewModelScope.launch(Dispatchers.IO) {
         Logger.d("Entered getDictionary")
-        _uiState.value = getDictionaryFromApi(word)
+        setUiState(getDictionaryFromApi(word))
     }
 
     private suspend fun getDictionaryFromApi(word: String): Dictionary? {

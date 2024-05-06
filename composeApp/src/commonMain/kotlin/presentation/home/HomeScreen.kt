@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
 import navigation.LocalNavHost
+import navigation.Screens
 import presentation.component.SearchedItem
 import repository.HomeRepository
 
@@ -48,10 +49,16 @@ fun HomeScreen() {
 
     val repository by remember { mutableStateOf(HomeRepository()) }
     val homeViewModel: HomeViewModel = viewModel { HomeViewModel(repository) }
-    val uiState = homeViewModel.uiState.collectAsState()
+    val uiState by homeViewModel.uiState.collectAsState()
 
     LaunchedEffect(uiState) {
-        Logger.d("Dictionary Response: ${uiState.value}")
+        Logger.d("Dictionary Response: $uiState")
+        uiState?.let {
+            Logger.d("Dictionary Response is not null and hence navigating: $it")
+            val number = (0..10).random()
+            navController.navigate("${Screens.Detail.route}/$number")
+            homeViewModel.setUiState(null)
+        }
     }
 
     Scaffold(
@@ -103,7 +110,7 @@ fun HomeScreen() {
                 onSearch = {
                     Logger.d("Clicked on search")
                     if (searchBarQuery.isNotEmpty()) {
-                        homeViewModel.getDictionary(searchBarQuery)
+                        homeViewModel.getDictionary(searchBarQuery.trim())
                         searchBarQuery = ""
                     }
                 },
