@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -67,6 +69,9 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
+
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
 
             implementation(libs.androidx.navigation.compose)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -136,6 +141,14 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+dependencies {
+    ksp(libs.room.compiler)
 }
 
 compose.experimental {
