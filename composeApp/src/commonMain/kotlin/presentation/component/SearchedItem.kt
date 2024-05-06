@@ -13,27 +13,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import data.response.Dictionary
 
 @Composable
 fun SearchedItem(
-    id: Int,
-    word: String,
-    meaning: String,
+    item: Dictionary,
     onClick: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .background(Color.White)
-            .clickable { onClick(id) }
+            .clickable { onClick(item.id) }
             .padding(16.dp)
     ) {
         Text(
-            text = word,
+            text = item.word,
             style = MaterialTheme.typography.headlineSmall
         )
         Text(
-            text = meaning,
+            text = item.meanings[0].partOfSpeech,
             style = MaterialTheme.typography.bodySmall
         )
     }

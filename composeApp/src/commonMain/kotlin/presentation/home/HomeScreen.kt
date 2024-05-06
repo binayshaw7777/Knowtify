@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Send
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
+import data.database.DictionaryDao
 import navigation.LocalNavHost
 import navigation.Screens
 import presentation.component.SearchedItem
@@ -41,22 +43,24 @@ import repository.HomeRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(dictionaryDao: DictionaryDao) {
 
     val navController = LocalNavHost.current
     var searchBarQuery by rememberSaveable { mutableStateOf("") }
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
+    val dictionaryDatabase by dictionaryDao.getAllDictionarySearch()
+        .collectAsState(initial = emptyList())
 
     val repository by remember { mutableStateOf(HomeRepository()) }
-    val homeViewModel: HomeViewModel = viewModel { HomeViewModel(repository) }
+    val homeViewModel: HomeViewModel = viewModel { HomeViewModel(repository, dictionaryDao) }
     val uiState by homeViewModel.uiState.collectAsState()
 
     LaunchedEffect(uiState) {
         Logger.d("Dictionary Response: $uiState")
         uiState?.let {
             Logger.d("Dictionary Response is not null and hence navigating: $it")
-            val number = (0..10).random()
-            navController.navigate("${Screens.Detail.route}/$number")
+            dictionaryDao.insert(it)
+            navController.navigate("${Screens.Detail.route}/${it.id}")
             homeViewModel.setUiState(null)
         }
     }
@@ -86,15 +90,12 @@ fun HomeScreen() {
                 modifier = Modifier.weight(9f),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                repeat(10) {
-                    item {
-                        SearchedItem(
-                            it,
-                            "Foodie",
-                            "A person with a special interest in or knowledge of..."
-                        ) {
-                            Logger.d("Clicked on item $it")
-                        }
+                items(dictionaryDatabase) { item ->
+                    SearchedItem(
+                        item
+                    ) {
+                        Logger.d("Clicked on item $it")
+                        navController.navigate("${Screens.Detail.route}/$it")
                     }
                 }
             }

@@ -25,6 +25,8 @@ fun DetailScreen(
 ) {
 
     val navController = LocalNavHost.current
+
+
     Scaffold(
         topBar = {
             TopAppBar(

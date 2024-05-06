@@ -3,6 +3,7 @@ package presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import data.database.DictionaryDao
 import data.response.Dictionary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -11,13 +12,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import repository.HomeRepository
 
-class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
+class HomeViewModel(
+    private val repository: HomeRepository,
+    private val dictionaryDao: DictionaryDao
+) : ViewModel() {
 
     private val _uiState: MutableStateFlow<Dictionary?> =
         MutableStateFlow(null)
     val uiState: StateFlow<Dictionary?> get() = _uiState
 
-    fun setUiState(dictionary: Dictionary?)  {
+    fun insertDictionary(dictionary: Dictionary) = viewModelScope.launch(Dispatchers.IO) {
+        dictionaryDao.insert(dictionary)
+    }
+
+    fun getAllDictionarySearch() = viewModelScope.launch(Dispatchers.IO) {
+        dictionaryDao.getAllDictionarySearch()
+    }
+
+    fun setUiState(dictionary: Dictionary?) {
         _uiState.value = dictionary
     }
 
