@@ -17,15 +17,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
 import data.database.DictionaryDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
 import navigation.LocalNavHost
-import presentation.home.HomeViewModel
 import repository.DetailRepository
-import repository.HomeRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,13 +37,17 @@ fun DetailScreen(
 ) {
 
     val navController = LocalNavHost.current
+    val scope = rememberCoroutineScope()
+
     val repository by remember { mutableStateOf(DetailRepository()) }
     val detailViewModel: DetailViewModel = viewModel { DetailViewModel(repository, dictionaryDao) }
 
     val uiState by detailViewModel.wordMeaning.collectAsState()
 
     LaunchedEffect(Unit) {
-        detailViewModel.getWordMeaningFromId(meaningId)
+        scope.launch(Dispatchers.IO) {
+            detailViewModel.getWordMeaningFromId(meaningId)
+        }
     }
 
     Scaffold(

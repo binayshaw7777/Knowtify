@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,6 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import co.touchlab.kermit.Logger
 import data.database.DictionaryDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
 import navigation.LocalNavHost
 import navigation.Screens
 import presentation.component.SearchedItem
@@ -46,23 +50,28 @@ import repository.HomeRepository
 fun HomeScreen(dictionaryDao: DictionaryDao) {
 
     val navController = LocalNavHost.current
+    val scope = rememberCoroutineScope()
+
     var searchBarQuery by rememberSaveable { mutableStateOf("") }
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
-    val dictionaryDatabase by dictionaryDao.getAllDictionarySearch()
-        .collectAsState(initial = emptyList())
 
     val repository by remember { mutableStateOf(HomeRepository()) }
     val homeViewModel: HomeViewModel = viewModel { HomeViewModel(repository, dictionaryDao) }
-    val uiState by homeViewModel.uiState.collectAsState()
+    val dictionaryDatabase by homeViewModel.dictionaryDatabase.collectAsState()
 
-    LaunchedEffect(uiState) {
-        Logger.d("Dictionary Response: $uiState")
-        uiState?.let {
-            Logger.d("Dictionary Response is not null and hence navigating: $it")
-            dictionaryDao.insert(it)
+    val insertedDictionary by homeViewModel.insertedDictionary.collectAsState()
+
+    LaunchedEffect(insertedDictionary) {
+        Logger.d("Inserted Dictionary Response: $insertedDictionary")
+        insertedDictionary?.let {
+            Logger.d("Inserted Dictionary Response is not null and hence navigating: $it")
             navController.navigate("${Screens.Detail.route}/${it.id}")
-            homeViewModel.setUiState(null)
+            homeViewModel.clearStates()
         }
+    }
+
+    LaunchedEffect(Unit) {
+        homeViewModel.getAllDictionarySearch()
     }
 
     Scaffold(
@@ -111,8 +120,10 @@ fun HomeScreen(dictionaryDao: DictionaryDao) {
                 onSearch = {
                     Logger.d("Clicked on search")
                     if (searchBarQuery.isNotEmpty()) {
-                        homeViewModel.getDictionary(searchBarQuery.trim())
-                        searchBarQuery = ""
+                        scope.launch(Dispatchers.IO) {
+                            homeViewModel.getDictionary(searchBarQuery)
+                            searchBarQuery = ""
+                        }
                     }
                 },
                 placeholder = { Text("Search any word") },
@@ -126,8 +137,10 @@ fun HomeScreen(dictionaryDao: DictionaryDao) {
                         }
                     } else {
                         IconButton(onClick = {
-                            homeViewModel.getDictionary(searchBarQuery)
-                            searchBarQuery = ""
+                            scope.launch(Dispatchers.IO) {
+                                homeViewModel.getDictionary(searchBarQuery)
+                                searchBarQuery = ""
+                            }
                         }) {
                             Icon(Icons.Default.Send, contentDescription = "Send")
                         }

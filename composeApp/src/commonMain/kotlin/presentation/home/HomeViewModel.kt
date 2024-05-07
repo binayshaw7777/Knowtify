@@ -21,21 +21,42 @@ class HomeViewModel(
         MutableStateFlow(null)
     val uiState: StateFlow<Dictionary?> get() = _uiState
 
-    fun insertDictionary(dictionary: Dictionary) = viewModelScope.launch(Dispatchers.IO) {
-        dictionaryDao.insert(dictionary)
+    private val _insertedDictionary: MutableStateFlow<Dictionary?> =
+        MutableStateFlow(null)
+    val insertedDictionary: StateFlow<Dictionary?> get() = _insertedDictionary
+
+    private val _dictionaryDatabase: MutableStateFlow<List<Dictionary>> =
+        MutableStateFlow(emptyList())
+    val dictionaryDatabase: StateFlow<List<Dictionary>> get() = _dictionaryDatabase
+
+    suspend fun insertDictionary(dictionary: Dictionary) {
+        val id = dictionaryDao.insert(dictionary)
+        getWordMeaningFromId(id.toInt())
     }
 
     fun getAllDictionarySearch() = viewModelScope.launch(Dispatchers.IO) {
-        dictionaryDao.getAllDictionarySearch()
+        _dictionaryDatabase.value = dictionaryDao.getAllDictionarySearch()
+    }
+
+    suspend fun getWordMeaningFromId(id: Int) {
+        repository.getWordMeaningFromId(dictionaryDao, id)
+        _insertedDictionary.value = dictionaryDao.getDictionaryById(id)
     }
 
     fun setUiState(dictionary: Dictionary?) {
         _uiState.value = dictionary
     }
 
-    fun getDictionary(word: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun clearStates() {
+        Logger.d("Clearing states")
+        _uiState.value = null
+        _insertedDictionary.value = null
+    }
+
+    suspend fun getDictionary(word: String) {
         Logger.d("Entered getDictionary")
         setUiState(getDictionaryFromApi(word))
+        insertDictionary(uiState.value!!)
     }
 
     private suspend fun getDictionaryFromApi(word: String): Dictionary? {

@@ -5,24 +5,23 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import data.response.Dictionary
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DictionaryDao {
 
     @Upsert
-    suspend fun insert(dictionary: Dictionary)
+    suspend fun insert(dictionary: Dictionary): Long
 
     @Query("SELECT * FROM dictionary WHERE id = :id")
-    fun getDictionaryById(id: Int): Flow<Dictionary>
+    suspend fun getDictionaryById(id: Int): Dictionary?
 
     @Delete
     suspend fun delete(dictionary: Dictionary)
 
     @Query("DELETE FROM dictionary WHERE id = :id")
-    fun deleteById(id: Int)
+    suspend fun deleteById(id: Int): Int
 
     @Query("SELECT * FROM dictionary")
-    fun getAllDictionarySearch(): Flow<List<Dictionary>>
+    suspend fun getAllDictionarySearch(): List<Dictionary>
 
 }

@@ -9,10 +9,10 @@ import com.binayshaw7777.knowtify.database.getDictionaryDatabase
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val dao = getDictionaryDatabase(applicationContext).dictionaryDao()
+        val database = getDictionaryDatabase(applicationContext)
 
         setContent {
-            App(dao)
+            App(database)
         }
     }
 }
