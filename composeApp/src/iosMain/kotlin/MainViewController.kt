@@ -3,8 +3,8 @@ import androidx.compose.ui.window.ComposeUIViewController
 import database.getDictionaryDatabase
 
 fun MainViewController() = ComposeUIViewController {
-    val dao = remember {
-        getDictionaryDatabase().dictionaryDao()
+    val database = remember {
+        getDictionaryDatabase()
     }
-    App(dao)
+    App(database)
 }
