@@ -26,7 +26,8 @@ kotlinx-serialization = "1.5.1"
 kermit = "2.0.3" # Logging
 
 # DI - Koin
-koin = "3.5.3"
+koin = "3.5.6"
+koin-compose = "1.0.4"
 
 # Ktor
 ktor = "2.3.2"
@@ -54,7 +55,9 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose"}
 
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }

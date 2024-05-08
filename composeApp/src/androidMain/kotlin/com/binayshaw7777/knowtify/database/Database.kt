@@ -3,7 +3,6 @@ package com.binayshaw7777.knowtify.database
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import data.database.DictionaryDatabase
 
 fun getDictionaryDatabase(context: Context): RoomDatabase.Builder<DictionaryDatabase> {
@@ -12,5 +11,4 @@ fun getDictionaryDatabase(context: Context): RoomDatabase.Builder<DictionaryData
         context = context.applicationContext,
         name = dbFile.absolutePath
     )
-        .setDriver(BundledSQLiteDriver())
 }

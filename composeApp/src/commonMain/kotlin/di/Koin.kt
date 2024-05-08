@@ -1,86 +1,27 @@
 package di
 
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.DEFAULT
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.serialization.kotlinx.json.json
+import androidx.room.RoomDatabase
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import data.database.DictionaryDatabase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.json.Json
-import org.koin.core.context.startKoin
-import org.koin.core.module.Module
-import org.koin.dsl.KoinAppDeclaration
+import kotlinx.coroutines.IO
 import org.koin.dsl.module
+import presentation.detail.DetailViewModel
+import presentation.home.HomeViewModel
+import repository.DetailRepository
+import repository.HomeRepository
+import util.viewModelDefinition
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
-    startKoin {
-        appDeclaration()
-        modules(
-//            viewModelModule,
-//            useCasesModule,
-//            repositoryModule,
-            ktorModule,
-//            sqlDelightModule,
-//            mapperModule,
-            dispatcherModule,
-//            platformModule()
-        )
-    }
+fun appModule(databaseBuilder: RoomDatabase.Builder<DictionaryDatabase>) = module {
 
-//val viewModelModule = module {
-//    factory { CharactersViewModel(get()) }
-//    factory { CharactersFavoritesViewModel(get()) }
-//    factory { params -> CharacterDetailViewModel(get(), get(), get(), params.get()) }
-//}
-
-//val useCasesModule: Module = module {
-//    factory { GetCharactersUseCase(get(), get()) }
-//    factory { GetCharactersFavoritesUseCase(get(), get()) }
-//    factory { GetCharacterUseCase(get(), get()) }
-//    factory { IsCharacterFavoriteUseCase(get(), get()) }
-//    factory { SwitchCharacterFavoriteUseCase(get(), get()) }
-//}
-
-//val repositoryModule = module {
-//    single<IRepository> { RepositoryImp(get(), get()) }
-//    single<ICacheData> { CacheDataImp(get()) }
-//    single<IRemoteData> { RemoteDataImp(get(), get(), get()) }
-//}
-
-val ktorModule = module {
+    single { HomeRepository() }
+    single { DetailRepository() }
     single {
-        HttpClient {
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        ignoreUnknownKeys = true
-                        prettyPrint = true
-                        isLenient = true
-                    }
-                )
-            }
-            install(Logging) {
-                logger = Logger.DEFAULT
-                level = LogLevel.ALL
-            }
-        }
+        databaseBuilder.fallbackToDestructiveMigrationOnDowngrade(true)
+            .setDriver(BundledSQLiteDriver())
+            .setQueryCoroutineContext(Dispatchers.IO).build()
     }
 
-    single { "https://rickandmortyapi.com" }
+    viewModelDefinition { HomeViewModel(get(), get()) }
+    viewModelDefinition { DetailViewModel(get(), get()) }
 }
-
-//val sqlDelightModule = module {
-//    single { SharedDatabase(get()) }
-//}
-
-val dispatcherModule = module {
-    factory { Dispatchers.Default }
-}
-
-//val mapperModule = module {
-//    factory { ApiCharacterMapper() }
-//}
-
-fun initKoin() = initKoin {}
