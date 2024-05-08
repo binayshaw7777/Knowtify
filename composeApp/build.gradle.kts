@@ -49,7 +49,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+    sourceSets.all {
+        languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
+    }
     sourceSets {
         val desktopMain by getting
         
@@ -70,7 +72,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
 
-            implementation(libs.room.runtime)
+            implementation(libs.androidx.room.runtime)
             implementation(libs.sqlite.bundled)
 
             implementation(libs.androidx.navigation.compose)
@@ -148,7 +150,11 @@ room {
 }
 
 dependencies {
-    ksp(libs.room.compiler)
+//    add("kspAndroid", libs.androidx.room.compiler)
+//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+//    add("kspIosX64", libs.androidx.room.compiler)
+//    add("kspIosArm64", libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 }
 
 compose.experimental {
