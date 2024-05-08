@@ -26,8 +26,8 @@ kotlinx-serialization = "1.5.1"
 kermit = "2.0.3" # Logging
 
 # DI - Koin
-koin = "3.5.6"
-koin-compose = "1.0.4"
+koin = "3.6.0-alpha3"
+koin-compose = "1.2.0-alpha3"
 
 # Ktor
 ktor = "2.3.2"
