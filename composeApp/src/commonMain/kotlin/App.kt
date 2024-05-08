@@ -1,25 +1,30 @@
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.remember
+import androidx.room.RoomDatabase
+import data.database.DictionaryDao
+import data.database.DictionaryDatabase
+import data.database.getRoomDatabase
 import navigation.Navigation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App() {
+fun App(databaseBuilder: RoomDatabase.Builder<DictionaryDatabase>) {
+
     MaterialTheme {
-        MainContent()
+
+        val database = remember { getRoomDatabase(databaseBuilder) }
+        val dictionaryDao = remember { database.dictionaryDao() }
+
+        MainContent(dictionaryDao)
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContent() {
+fun MainContent(dictionaryDao: DictionaryDao) {
     Column {
-        Navigation()
+        Navigation(dictionaryDao)
     }
 }
