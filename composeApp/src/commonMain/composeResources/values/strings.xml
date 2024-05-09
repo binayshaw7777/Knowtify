@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ComposeApp</string>
+    <string name="general">General</string>
+    <string name="theme">Theme</string>
+    <string name="about">About</string>
+    <string name="invite_others">Invite Others</string>
+    <string name="licenses">Licenses</string>
+    <string name="setting">Setting</string>
+    <string name="home">Home</string>
+    <string name="detail">Detail</string>
+</resources>
