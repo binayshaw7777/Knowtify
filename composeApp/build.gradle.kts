@@ -59,8 +59,7 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
-
-
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -82,6 +81,8 @@ kotlin {
             implementation(libs.kermit)
 
             implementation(libs.koin.core)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
 
             implementation(libs.ktor.core)
             implementation(libs.ktor.json)

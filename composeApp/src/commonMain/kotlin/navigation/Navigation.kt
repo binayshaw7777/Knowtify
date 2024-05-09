@@ -15,7 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import data.database.DictionaryDao
 import presentation.detail.DetailScreen
 import presentation.home.HomeScreen
 import presentation.setting.Setting
@@ -28,7 +27,7 @@ val LocalNavHost = staticCompositionLocalOf<NavHostController> {
 }
 
 @Composable
-fun Navigation(dictionaryDao: DictionaryDao) {
+fun Navigation() {
 
     val navController: NavHostController = rememberNavController()
     val backStackEntry = navController.currentBackStackEntryAsState()
@@ -47,7 +46,7 @@ fun Navigation(dictionaryDao: DictionaryDao) {
             ) {
 
                 composable(route = Screens.Home.route) {
-                    HomeScreen(dictionaryDao = dictionaryDao)
+                    HomeScreen()
                 }
 
                 composable(route = Screens.Setting.route) {
@@ -61,7 +60,7 @@ fun Navigation(dictionaryDao: DictionaryDao) {
 
                     val meaningId: Int = backStackEntry.value?.arguments?.getInt("meaningId") ?: -1
 
-                    DetailScreen(meaningId = meaningId, dictionaryDao = dictionaryDao)
+                    DetailScreen(meaningId = meaningId)
                 }
             }
         }

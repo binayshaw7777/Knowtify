@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import data.database.DictionaryDao
+import data.database.DictionaryDatabase
 import data.response.Dictionary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -14,8 +15,10 @@ import repository.HomeRepository
 
 class HomeViewModel(
     private val repository: HomeRepository,
-    private val dictionaryDao: DictionaryDao
+    dictionaryDatabase: DictionaryDatabase
 ) : ViewModel() {
+
+    private val dictionaryDao: DictionaryDao = dictionaryDatabase.dictionaryDao()
 
     private val _uiState: MutableStateFlow<Dictionary?> =
         MutableStateFlow(null)
