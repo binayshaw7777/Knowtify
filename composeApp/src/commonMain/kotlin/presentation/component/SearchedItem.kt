@@ -12,12 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
-import data.response.Dictionary
+import androidx.compose.ui.unit.sp
+import data.model.WordItemDTO
 
 @Composable
 fun SearchedItem(
-    item: Dictionary,
+    item: WordItemDTO,
     onClick: (Int) -> Unit
 ) {
     Column(
@@ -28,13 +32,18 @@ fun SearchedItem(
             .padding(16.dp)
     ) {
         Text(
-            text = item.word,
+            text = item.word ?: "",
             style = MaterialTheme.typography.headlineSmall
         )
-        item.phonetics.firstOrNull()?.text?.let {
+        item.phonetic?.let {
             Text(
                 text = it,
-                style = MaterialTheme.typography.bodySmall
+                style = TextStyle(
+                    color = Color.Gray,
+                    fontSize = 16.sp,
+                    fontStyle = FontStyle.Italic,
+                    fontFamily = FontFamily.Serif
+                )
             )
         }
     }

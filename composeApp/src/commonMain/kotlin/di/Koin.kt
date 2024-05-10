@@ -9,9 +9,9 @@ import org.koin.dsl.module
 import presentation.detail.DetailViewModel
 import presentation.home.HomeViewModel
 import presentation.setting.SettingViewModel
-import repository.DetailRepository
-import repository.HomeRepository
-import repository.SettingRepository
+import presentation.detail.DetailRepository
+import presentation.home.HomeRepository
+import presentation.setting.SettingRepository
 import util.viewModelDefinition
 
 fun appModule(databaseBuilder: RoomDatabase.Builder<DictionaryDatabase>) = module {
@@ -20,9 +20,11 @@ fun appModule(databaseBuilder: RoomDatabase.Builder<DictionaryDatabase>) = modul
     single { DetailRepository() }
     single { SettingRepository() }
     single {
-        databaseBuilder.fallbackToDestructiveMigrationOnDowngrade(true)
+        databaseBuilder
+            .fallbackToDestructiveMigrationOnDowngrade(true)
             .setDriver(BundledSQLiteDriver())
-            .setQueryCoroutineContext(Dispatchers.IO).build()
+            .setQueryCoroutineContext(Dispatchers.IO)
+            .build()
     }
 
     viewModelDefinition { HomeViewModel(get(), get()) }

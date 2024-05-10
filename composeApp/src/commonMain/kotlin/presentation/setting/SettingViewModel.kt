@@ -7,7 +7,6 @@ import data.database.DictionaryDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
-import repository.SettingRepository
 
 class SettingViewModel(
     private val settingRepository: SettingRepository,

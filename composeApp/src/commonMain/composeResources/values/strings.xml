@@ -9,4 +9,5 @@
     <string name="home">Home</string>
     <string name="detail">Detail</string>
     <string name="delete_history">Delete history</string>
+    <string name="part_of_speech">Part of speech</string>
 </resources>

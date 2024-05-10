@@ -3,11 +3,11 @@ package data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import data.response.Dictionary
-import data.response.DictionaryConverter
+import data.model.TypeConverter
+import data.model.WordItemDTO
 
-@Database(entities = [Dictionary::class], version = 1)
-@TypeConverters(DictionaryConverter::class)
+@Database(entities = [WordItemDTO::class], version = 2)
+@TypeConverters(TypeConverter::class)
 abstract class DictionaryDatabase : RoomDatabase() {
 
     abstract fun dictionaryDao(): DictionaryDao

@@ -1,5 +1,6 @@
 package presentation.setting
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -58,6 +59,7 @@ fun Setting(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color(0xFFEEF1F6))
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {

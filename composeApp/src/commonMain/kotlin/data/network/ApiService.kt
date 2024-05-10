@@ -1,11 +1,12 @@
 package data.network
 
 
-import data.response.Dictionary
+import data.response.DictionaryResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -20,6 +21,9 @@ import util.Constant.TIMEOUT
 object ApiService {
     @OptIn(ExperimentalSerializationApi::class)
     private val client = HttpClient {
+        defaultRequest {
+            url("$BASE_URL/")
+        }
         install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true
@@ -45,9 +49,8 @@ object ApiService {
         }
     }
 
-    suspend fun getWordMeaning(word: String): List<Dictionary> {
-        val url = "$BASE_URL/$word"
-        val response = client.get(url)
+    suspend fun getWordMeaning(word: String): List<DictionaryResponse> {
+        val response = client.get(word)
         co.touchlab.kermit.Logger.d("Response: ${response.body<String>()}")
         return response.body()
     }

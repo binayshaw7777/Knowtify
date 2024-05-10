@@ -1,4 +1,4 @@
-package repository
+package presentation.setting
 
 import data.database.DictionaryDao
 

@@ -5,13 +5,14 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import data.database.DictionaryDao
 import data.database.DictionaryDatabase
-import data.response.Dictionary
+import data.response.DictionaryResponse
+import data.model.WordItemDTO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import repository.HomeRepository
+import util.toWordItem
 
 class HomeViewModel(
     private val repository: HomeRepository,
@@ -20,20 +21,20 @@ class HomeViewModel(
 
     private val dictionaryDao: DictionaryDao = dictionaryDatabase.dictionaryDao()
 
-    private val _uiState: MutableStateFlow<Dictionary?> =
+    private val _uiState: MutableStateFlow<DictionaryResponse?> =
         MutableStateFlow(null)
-    val uiState: StateFlow<Dictionary?> get() = _uiState
+    val uiState: StateFlow<DictionaryResponse?> get() = _uiState
 
-    private val _insertedDictionary: MutableStateFlow<Dictionary?> =
+    private val _insertedDictionary: MutableStateFlow<WordItemDTO?> =
         MutableStateFlow(null)
-    val insertedDictionary: StateFlow<Dictionary?> get() = _insertedDictionary
+    val insertedDictionary: StateFlow<WordItemDTO?> get() = _insertedDictionary
 
-    private val _dictionaryDatabase: MutableStateFlow<List<Dictionary>> =
+    private val _dictionaryDatabase: MutableStateFlow<List<WordItemDTO>> =
         MutableStateFlow(emptyList())
-    val dictionaryDatabase: StateFlow<List<Dictionary>> get() = _dictionaryDatabase
+    val dictionaryDatabase: StateFlow<List<WordItemDTO>> get() = _dictionaryDatabase
 
-    suspend fun insertDictionary(dictionary: Dictionary) {
-        val id = dictionaryDao.insert(dictionary)
+    private suspend fun insertDictionary(dictionary: DictionaryResponse) {
+        val id = dictionaryDao.insert(dictionary.toWordItem())
         getWordMeaningFromId(id.toInt())
     }
 
@@ -41,12 +42,12 @@ class HomeViewModel(
         _dictionaryDatabase.value = dictionaryDao.getAllDictionarySearch()
     }
 
-    suspend fun getWordMeaningFromId(id: Int) {
+    private suspend fun getWordMeaningFromId(id: Int) {
         repository.getWordMeaningFromId(dictionaryDao, id)
         _insertedDictionary.value = dictionaryDao.getDictionaryById(id)
     }
 
-    fun setUiState(dictionary: Dictionary?) {
+    private fun setUiState(dictionary: DictionaryResponse?) {
         _uiState.value = dictionary
     }
 
@@ -62,7 +63,7 @@ class HomeViewModel(
         insertDictionary(uiState.value!!)
     }
 
-    private suspend fun getDictionaryFromApi(word: String): Dictionary? {
+    private suspend fun getDictionaryFromApi(word: String): DictionaryResponse? {
         val response = repository.getWordMeaning(word)
         Logger.d("Response: $response")
         return response

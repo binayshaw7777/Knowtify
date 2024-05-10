@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
+    "version": 2,
     "identityHash": "fd7e0f3e810218fa391145c0d08139c6",
     "entities": [
       {
         "tableName": "dictionary",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `word` TEXT, `phonetic` TEXT, `meanings` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `meanings` TEXT, `phonetic` TEXT, `word` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,8 +15,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "word",
-            "columnName": "word",
+            "fieldPath": "meanings",
+            "columnName": "meanings",
             "affinity": "TEXT"
           },
           {
@@ -25,8 +25,8 @@
             "affinity": "TEXT"
           },
           {
-            "fieldPath": "meanings",
-            "columnName": "meanings",
+            "fieldPath": "word",
+            "columnName": "word",
             "affinity": "TEXT"
           }
         ],
