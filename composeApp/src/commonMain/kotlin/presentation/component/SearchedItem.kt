@@ -31,9 +31,11 @@ fun SearchedItem(
             text = item.word,
             style = MaterialTheme.typography.headlineSmall
         )
-        Text(
-            text = item.meanings[0].partOfSpeech,
-            style = MaterialTheme.typography.bodySmall
-        )
+        item.phonetics.firstOrNull()?.text?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }

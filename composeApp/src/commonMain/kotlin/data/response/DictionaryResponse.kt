@@ -27,15 +27,18 @@ data class License(
 
 @Serializable
 data class Phonetics(
-    @SerialName("audio") var audio: String,
+    @SerialName("text") var text: String? = null,
+    @SerialName("audio") var audio: String? = null,
     @SerialName("sourceUrl") var sourceUrl: String? = null,
+    @SerialName("license") val license: License? = null,
 )
 
 @Serializable
 data class Definitions(
     @SerialName("definition") var definition: String,
     @SerialName("synonyms") var synonyms: List<String>,
-    @SerialName("antonyms") var antonyms: List<String>
+    @SerialName("antonyms") var antonyms: List<String>,
+    @SerialName("example") val example: String? = null
 )
 
 @Serializable

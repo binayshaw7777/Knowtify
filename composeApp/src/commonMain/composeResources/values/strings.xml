@@ -3,9 +3,10 @@
     <string name="general">General</string>
     <string name="theme">Theme</string>
     <string name="about">About</string>
-    <string name="invite_others">Invite Others</string>
+    <string name="invite_others">Invite others</string>
     <string name="licenses">Licenses</string>
     <string name="setting">Setting</string>
     <string name="home">Home</string>
     <string name="detail">Detail</string>
+    <string name="delete_history">Delete history</string>
 </resources>

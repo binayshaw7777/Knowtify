@@ -24,4 +24,6 @@ interface DictionaryDao {
     @Query("SELECT * FROM dictionary")
     suspend fun getAllDictionarySearch(): List<Dictionary>
 
+    @Query("DELETE FROM dictionary")
+    suspend fun deleteAll()
 }

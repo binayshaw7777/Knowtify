@@ -23,17 +23,21 @@ import co.touchlab.kermit.Logger
 import knowtify.composeapp.generated.resources.Res
 import knowtify.composeapp.generated.resources.about
 import knowtify.composeapp.generated.resources.compose_multiplatform
+import knowtify.composeapp.generated.resources.delete_history
 import knowtify.composeapp.generated.resources.general
 import knowtify.composeapp.generated.resources.invite_others
 import knowtify.composeapp.generated.resources.licenses
 import knowtify.composeapp.generated.resources.theme
 import navigation.LocalNavHost
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import presentation.component.SettingItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Setting() {
+fun Setting(
+    settingViewModel: SettingViewModel = koinInject()
+) {
 
     val navController = LocalNavHost.current
 
@@ -94,6 +98,16 @@ fun Setting() {
                         onClick = { Logger.d("Clicked on theme") },
                         resource = Res.drawable.compose_multiplatform,
                         itemName = stringResource(Res.string.licenses)
+                    )
+                }
+                item {
+                    SettingItem(
+                        onClick = {
+                            settingViewModel.deleteHistory()
+                            navController.popBackStack()
+                        },
+                        resource = Res.drawable.compose_multiplatform,
+                        itemName = stringResource(Res.string.delete_history)
                     )
                 }
             }

@@ -40,14 +40,16 @@ object ApiService {
             logger = Logger.DEFAULT
             level = LogLevel.ALL
             filter { request ->
-                request.url.host.contains("nytimes.com")
+                request.url.host.contains("api.dictionaryapi.dev")
             }
         }
     }
 
     suspend fun getWordMeaning(word: String): List<Dictionary> {
         val url = "$BASE_URL/$word"
-        return client.get(url).body()
+        val response = client.get(url)
+        co.touchlab.kermit.Logger.d("Response: ${response.body<String>()}")
+        return response.body()
     }
 
 }

@@ -8,14 +8,17 @@ import kotlinx.coroutines.IO
 import org.koin.dsl.module
 import presentation.detail.DetailViewModel
 import presentation.home.HomeViewModel
+import presentation.setting.SettingViewModel
 import repository.DetailRepository
 import repository.HomeRepository
+import repository.SettingRepository
 import util.viewModelDefinition
 
 fun appModule(databaseBuilder: RoomDatabase.Builder<DictionaryDatabase>) = module {
 
     single { HomeRepository() }
     single { DetailRepository() }
+    single { SettingRepository() }
     single {
         databaseBuilder.fallbackToDestructiveMigrationOnDowngrade(true)
             .setDriver(BundledSQLiteDriver())
@@ -24,4 +27,5 @@ fun appModule(databaseBuilder: RoomDatabase.Builder<DictionaryDatabase>) = modul
 
     viewModelDefinition { HomeViewModel(get(), get()) }
     viewModelDefinition { DetailViewModel(get(), get()) }
+    viewModelDefinition { SettingViewModel(get(), get()) }
 }
