@@ -35,9 +35,9 @@ fun SearchedItem(
             text = item.word ?: "",
             style = MaterialTheme.typography.headlineSmall
         )
-        item.phonetic?.let {
+        if (item.phonetic?.isNotEmpty() == true) {
             Text(
-                text = it,
+                text = item.phonetic,
                 style = TextStyle(
                     color = Color.Gray,
                     fontSize = 16.sp,
