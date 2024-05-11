@@ -1,21 +1,26 @@
 package data.network
 
-// Src: https://github.com/Kashif-E/KMPMovies/blob/master/MoviesApp/src/commonMain/kotlin/com/kashif/common/data/paging/Result.kt
+// https://github.com/RajaNimit27/ComposeMultiplatform_Ktor_client_Android_iOS_Desktop/blob/master/composeApp/src/commonMain/kotlin/network/NetworkResult.kt
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+sealed class ApiResult<T, E>(
+    val status: ApiStatus,
+    val data: T?,
+    val fail: E?,
+    val message: String?
+) {
 
-sealed interface Result<out T> {
-    data class Success<T>(val data: T) : Result<T>
-    data class Error(val exception: String) : Result<Nothing>
-    data object Loading : Result<Nothing>
+    data class Success<T, E>(val _data: T?) :
+        ApiResult<T, E>(status = ApiStatus.SUCCESS, data = _data, fail = null, message = null)
+
+    data class Error<T, E>(val _error: E?, val exception: String) :
+        ApiResult<T, E>(status = ApiStatus.FAILED, data = null, fail = _error, message = exception)
+
+    data class Loading<T, E>(val isLoading: Boolean) :
+        ApiResult<T, E>(status = ApiStatus.LOADING, data = null, fail = null, message = null)
 }
 
-fun <T> Flow<T>.asResult(): Flow<Result<T>> {
-    return this.map<T, Result<T>> { Result.Success(it) }.onStart { emit(Result.Loading) }
-        .catch { exception ->
-            emit(Result.Error(exception.message ?: "Something went wrong, please try again."))
-        }
+enum class ApiStatus {
+    SUCCESS,
+    FAILED,
+    LOADING,
 }

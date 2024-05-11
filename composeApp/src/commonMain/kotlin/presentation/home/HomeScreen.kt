@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import co.touchlab.kermit.Logger
 import knowtify.composeapp.generated.resources.Res
 import knowtify.composeapp.generated.resources.home
+import knowtify.composeapp.generated.resources.search_any_word
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -47,7 +48,9 @@ import navigation.LocalNavHost
 import navigation.Screens
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
+import presentation.component.LoadingProgressDialog
 import presentation.component.SearchedItem
+import presentation.home.states.HomeScreenState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,6 +67,21 @@ fun HomeScreen(
     val dictionaryDatabase by homeViewModel.dictionaryDatabase.collectAsState()
 
     val insertedDictionary by homeViewModel.insertedDictionary.collectAsState()
+
+    val homeScreenState by homeViewModel.homeViewState.collectAsState()
+
+    when (homeScreenState) {
+        is HomeScreenState.Clear -> {}
+        is HomeScreenState.Loading -> {
+            LoadingProgressDialog()
+        }
+
+        is HomeScreenState.Error -> {
+        }
+
+        is HomeScreenState.Success -> {
+        }
+    }
 
     LaunchedEffect(insertedDictionary) {
         Logger.d("Inserted Dictionary Response: $insertedDictionary")
@@ -139,18 +157,15 @@ fun HomeScreen(
                 },
                 placeholder = {
                     Text(
-                        text = "Search any word",
+                        text = stringResource(Res.string.search_any_word),
                         style = TextStyle(color = MaterialTheme.colorScheme.onSecondaryContainer)
                     )
                 },
                 trailingIcon = {
                     if (searchBarQuery.isEmpty()) {
-                        IconButton(onClick = {
-                            // Speech to text
-                            Logger.d("Recording audio")
-                        }) {
+                        IconButton(onClick = {}) {
                             Icon(
-                                imageVector = Icons.Default.Mic,
+                                imageVector = Icons.Default.Search,
                                 contentDescription = "Mic",
                                 tint = MaterialTheme.colorScheme.onSecondaryContainer
                             )
@@ -163,7 +178,7 @@ fun HomeScreen(
                             }
                         }) {
                             Icon(
-                                imageVector = Icons.Default.Send,
+                                imageVector = Icons.AutoMirrored.Filled.Send,
                                 contentDescription = "Send",
                                 tint = MaterialTheme.colorScheme.onSecondaryContainer
                             )
