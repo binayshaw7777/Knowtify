@@ -60,6 +60,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
             implementation(libs.koin.android)
+            api(libs.androidx.startup)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -76,6 +77,7 @@ kotlin {
 
             implementation(libs.androidx.navigation.compose)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
+            implementation(libs.androidx.data.store.core)
             implementation(libs.kotlin.coroutines)
 
             implementation(libs.kermit)
@@ -125,6 +127,9 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+    }
+    lint {
+        baseline = file("lint-baseline.xml")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

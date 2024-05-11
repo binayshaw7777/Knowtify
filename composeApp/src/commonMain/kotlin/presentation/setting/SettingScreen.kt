@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,15 +58,22 @@ fun Setting(
 
     val navController = LocalNavHost.current
     var showThemeSelectionDialog by remember { mutableStateOf(false) }
+    val isDarkModeEnabled by settingViewModel.isDarkModeEnabled.collectAsState()
+    val isSystemInDarkTheme = isSystemInDarkTheme()
 
     if (showThemeSelectionDialog) {
         ThemeSelectionDialog(
             onThemeChange = { theme ->
                 Logger.d("Theme changed to $theme")
+                when (theme) {
+                    Theme.Light -> settingViewModel.changeDarkMode(false)
+                    Theme.Dark -> settingViewModel.changeDarkMode(true)
+                    Theme.System -> settingViewModel.changeDarkMode(isSystemInDarkTheme)
+                }
                 showThemeSelectionDialog = false
             },
             onDismissRequest = { showThemeSelectionDialog = false },
-            currentTheme = if (isSystemInDarkTheme()) Theme.Dark else Theme.Light
+            currentTheme = if (isDarkModeEnabled) Theme.Dark else Theme.Light
         )
     }
 
