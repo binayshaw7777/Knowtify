@@ -34,11 +34,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import co.touchlab.kermit.Logger
+import knowtify.composeapp.generated.resources.Res
+import knowtify.composeapp.generated.resources.home
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import navigation.LocalNavHost
 import navigation.Screens
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import presentation.component.SearchedItem
 
@@ -74,11 +77,11 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Home") },
+                title = { Text(stringResource(Res.string.home)) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 actions = {
-                    IconButton(onClick = { navController.navigate("setting") }) {
-                        Icon(Icons.Default.Settings, contentDescription = "Goto Settings Screen")
+                    IconButton(onClick = { navController.navigate(Screens.Setting.route) }) {
+                        Icon(Icons.Default.Settings, contentDescription = "Goto Setting Screen")
                     }
                 }
             )
@@ -100,7 +103,6 @@ fun HomeScreen(
                     SearchedItem(
                         item
                     ) {
-                        Logger.d("Clicked on item $it")
                         navController.navigate("${Screens.Detail.route}/$it")
                     }
                 }

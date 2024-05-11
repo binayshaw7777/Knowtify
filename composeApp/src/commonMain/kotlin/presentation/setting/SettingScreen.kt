@@ -28,6 +28,7 @@ import knowtify.composeapp.generated.resources.delete_history
 import knowtify.composeapp.generated.resources.general
 import knowtify.composeapp.generated.resources.invite_others
 import knowtify.composeapp.generated.resources.licenses
+import knowtify.composeapp.generated.resources.setting
 import knowtify.composeapp.generated.resources.theme
 import navigation.LocalNavHost
 import org.jetbrains.compose.resources.stringResource
@@ -45,7 +46,7 @@ fun Setting(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Setting") },
+                title = { Text(stringResource(Res.string.setting)) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {

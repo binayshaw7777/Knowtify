@@ -11,3 +11,4 @@ expect inline fun <reified T : ViewModel> Module.viewModelDefinition(
     noinline definition: Definition<T>
 ): KoinDefinition<T>
 
+fun String.titleCaseFirstChar() = replaceFirstChar(Char::titlecase)

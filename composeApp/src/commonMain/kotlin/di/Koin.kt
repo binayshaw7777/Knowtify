@@ -3,6 +3,7 @@ package di
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import data.database.DictionaryDatabase
+import data.database.DictionaryDatabase.Companion.MIGRATION_1_2
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import org.koin.dsl.module
@@ -21,7 +22,8 @@ fun appModule(databaseBuilder: RoomDatabase.Builder<DictionaryDatabase>) = modul
     single { SettingRepository() }
     single {
         databaseBuilder
-            .fallbackToDestructiveMigrationOnDowngrade(true)
+            .addMigrations(MIGRATION_1_2)
+            .fallbackToDestructiveMigration(true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()

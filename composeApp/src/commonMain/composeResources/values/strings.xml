@@ -10,4 +10,11 @@
     <string name="detail">Detail</string>
     <string name="delete_history">Delete history</string>
     <string name="part_of_speech">Part of speech</string>
+    <string name="bullet">•</string>
+    <string name="back">Back</string>
+    <string name="goto_setting_screen">Goto Setting Screen</string>
+    <string name="search_any_word">Search any word</string>
+    <string name="mic">Mic</string>
+    <string name="send">Send</string>
+    <string name="go_back">Go back</string>
 </resources>
