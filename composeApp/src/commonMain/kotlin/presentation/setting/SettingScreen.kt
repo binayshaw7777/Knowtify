@@ -23,6 +23,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -42,6 +46,8 @@ import navigation.LocalNavHost
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import presentation.component.SettingItem
+import presentation.component.Theme
+import presentation.component.ThemeSelectionDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,6 +56,18 @@ fun Setting(
 ) {
 
     val navController = LocalNavHost.current
+    var showThemeSelectionDialog by remember { mutableStateOf(false) }
+
+    if (showThemeSelectionDialog) {
+        ThemeSelectionDialog(
+            onThemeChange = { theme ->
+                Logger.d("Theme changed to $theme")
+                showThemeSelectionDialog = false
+            },
+            onDismissRequest = { showThemeSelectionDialog = false },
+            currentTheme = if (isSystemInDarkTheme()) Theme.Dark else Theme.Light
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -87,7 +105,10 @@ fun Setting(
                 }
                 item {
                     SettingItem(
-                        onClick = { Logger.d("Clicked on theme") },
+                        onClick = {
+                            Logger.d("Clicked on theme")
+                            showThemeSelectionDialog = true
+                        },
                         imageVector = if (isSystemInDarkTheme()) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
                         itemName = stringResource(Res.string.theme)
                     )
