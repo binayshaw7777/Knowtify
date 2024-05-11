@@ -4,12 +4,15 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 interface AppPreferences {
     suspend fun isDarkModeEnabled(): Boolean
     suspend fun changeDarkMode(isEnabled: Boolean): Preferences
+
+    val onDarkModeChange: Flow<Boolean>
 }
 
 internal class AppPreferencesImpl(
@@ -30,4 +33,9 @@ internal class AppPreferencesImpl(
     override suspend fun changeDarkMode(isEnabled : Boolean) = dataStore.edit { preferences ->
         preferences[darkModeKey] = isEnabled
     }
+
+    override val onDarkModeChange: Flow<Boolean>
+        get() = dataStore.data.map { preferences ->
+            preferences[darkModeKey] ?: false
+        }
 }

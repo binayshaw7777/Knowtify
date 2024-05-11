@@ -9,14 +9,14 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import util.ApplicationComponent
+import util.AppPreferences
 
 class SettingViewModel(
     private val settingRepository: SettingRepository,
-    dictionaryDatabase: DictionaryDatabase
+    dictionaryDatabase: DictionaryDatabase,
+    private val appPreferences: AppPreferences
 ) : ViewModel() {
 
-    private val appPreferences = ApplicationComponent.coreComponent.appPreferences
 
     private val dictionaryDao: DictionaryDao = dictionaryDatabase.dictionaryDao()
 
@@ -25,6 +25,11 @@ class SettingViewModel(
 
     fun deleteHistory() = viewModelScope.launch(Dispatchers.IO) {
         settingRepository.deleteAllDictionarySearch(dictionaryDao)
+    }
+
+
+    init {
+        isDarkModeEnabled()
     }
 
     private fun isDarkModeEnabled() = viewModelScope.launch(Dispatchers.IO) {
