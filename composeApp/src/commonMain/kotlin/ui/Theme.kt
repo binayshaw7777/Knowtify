@@ -252,18 +252,16 @@ val unspecified_scheme = ColorFamily(
 @Composable
 fun KnowtifyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
-        lightScheme
-    } else {
         darkScheme
+    } else {
+        lightScheme
     }
 
     MaterialTheme(
         colorScheme = colors,
-//        typography = Typography,
-//        shapes = Shapes,
         content = content
     )
 }

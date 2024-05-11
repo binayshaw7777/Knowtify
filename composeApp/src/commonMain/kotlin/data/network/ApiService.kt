@@ -4,6 +4,7 @@ package data.network
 import data.response.DictionaryResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpCallValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -38,6 +39,10 @@ object ApiService {
             connectTimeoutMillis = TIMEOUT
             requestTimeoutMillis = TIMEOUT
             socketTimeoutMillis = TIMEOUT
+        }
+
+        install(HttpCallValidator) {
+            handleResponseExceptionWithRequest { cause, _ -> println("exception $cause") }
         }
 
         install(Logging) {

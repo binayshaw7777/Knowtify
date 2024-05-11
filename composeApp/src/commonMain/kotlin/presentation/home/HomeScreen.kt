@@ -1,6 +1,7 @@
 package presentation.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,10 +16,12 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -32,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import co.touchlab.kermit.Logger
 import knowtify.composeapp.generated.resources.Res
@@ -87,14 +91,19 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
+
         Column(
-            modifier = Modifier.fillMaxSize().background(Color(0xFFEEF1F6))
+            modifier = Modifier.fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
+
+            Logger.d("Is system in dark mode: ${isSystemInDarkTheme()}")
+
             LazyColumn(
                 modifier = Modifier.weight(9f),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -115,7 +124,10 @@ fun HomeScreen(
                 onQueryChange = { searchBarQuery = it },
                 active = isSearchActive,
                 onActiveChange = { isSearchActive = false },
-                colors = SearchBarDefaults.colors(Color.White),
+                colors = SearchBarDefaults.colors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    inputFieldColors = TextFieldDefaults.colors(MaterialTheme.colorScheme.onSecondaryContainer)
+                ),
                 onSearch = {
                     Logger.d("Clicked on search")
                     if (searchBarQuery.isNotEmpty()) {
@@ -125,14 +137,23 @@ fun HomeScreen(
                         }
                     }
                 },
-                placeholder = { Text("Search any word") },
+                placeholder = {
+                    Text(
+                        text = "Search any word",
+                        style = TextStyle(color = MaterialTheme.colorScheme.onSecondaryContainer)
+                    )
+                },
                 trailingIcon = {
                     if (searchBarQuery.isEmpty()) {
                         IconButton(onClick = {
                             // Speech to text
                             Logger.d("Recording audio")
                         }) {
-                            Icon(Icons.Default.Mic, contentDescription = "Mic")
+                            Icon(
+                                imageVector = Icons.Default.Mic,
+                                contentDescription = "Mic",
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
                         }
                     } else {
                         IconButton(onClick = {
@@ -141,7 +162,11 @@ fun HomeScreen(
                                 searchBarQuery = ""
                             }
                         }) {
-                            Icon(Icons.Default.Send, contentDescription = "Send")
+                            Icon(
+                                imageVector = Icons.Default.Send,
+                                contentDescription = "Send",
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
                         }
                     }
                 }

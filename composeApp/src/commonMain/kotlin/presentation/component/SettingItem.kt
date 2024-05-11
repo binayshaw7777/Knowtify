@@ -9,13 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -77,7 +82,8 @@ fun SettingItem(
 fun SettingItem(
     onClick: () -> Unit,
     imageVector: ImageVector,
-    itemName: String
+    itemName: String,
+    itemColor: Color = MaterialTheme.colorScheme.onSurface
 ) {
 
     Row(
@@ -92,9 +98,15 @@ fun SettingItem(
             modifier = Modifier.size(24.dp),
             imageVector = imageVector,
             contentDescription = null,
+            colorFilter = ColorFilter.tint(color = itemColor)
         )
         Text(
-            text = itemName
+            text = itemName,
+            style = TextStyle(
+                color = itemColor,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
         )
     }
 }

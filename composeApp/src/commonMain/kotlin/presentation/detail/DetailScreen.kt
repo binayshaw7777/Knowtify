@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.sp
 import data.model.MeaningDTO
 import data.model.WordItemDTO
 import knowtify.composeapp.generated.resources.Res
+import knowtify.composeapp.generated.resources.back
+import knowtify.composeapp.generated.resources.bullet
 import knowtify.composeapp.generated.resources.detail
 import knowtify.composeapp.generated.resources.part_of_speech
 import kotlinx.coroutines.Dispatchers
@@ -72,7 +74,7 @@ fun DetailScreen(
                 title = { Text(text = stringResource(Res.string.detail)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(Res.string.back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -82,7 +84,7 @@ fun DetailScreen(
 
         Column(
             modifier = Modifier.fillMaxSize()
-                .background(Color(0xFFEEF1F6))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp)
                 .padding(paddingValues),
             horizontalAlignment = Alignment.Start
@@ -94,7 +96,7 @@ fun DetailScreen(
                 Text(
                     text = uiState?.word ?: "",
                     style = TextStyle(
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -103,8 +105,8 @@ fun DetailScreen(
                     Text(
                         text = uiState!!.phonetic!!,
                         style = TextStyle(
-                            color = Color.Gray,
-                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 14.sp,
                             fontStyle = FontStyle.Italic,
                             fontFamily = FontFamily.Serif
                         )
@@ -121,7 +123,7 @@ fun DetailScreen(
                 Text(
                     text = stringResource(Res.string.part_of_speech),
                     style = TextStyle(
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Black
                     )
@@ -161,20 +163,21 @@ fun Meaning(
         Text(
             text = meaning.partOfSpeech?.titleCaseFirstChar() ?: index.toString(),
             fontSize = 22.sp,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Medium
         )
 
         if (meaning.definitions?.definition?.isNotEmpty() == true) {
+
             Spacer(modifier = Modifier.height(8.dp))
 
             Row {
 
                 Text(
-                    text = "•",
+                    text = stringResource(Res.string.bullet),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -182,22 +185,23 @@ fun Meaning(
                 Text(
                     text = meaning.definitions.definition,
                     fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
             }
         }
 
         if (meaning.definitions?.example?.isNotEmpty() == true) {
+
             Spacer(modifier = Modifier.height(8.dp))
 
             Row {
 
                 Text(
-                    text = "•",
+                    text = stringResource(Res.string.bullet),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -205,9 +209,8 @@ fun Meaning(
                 Text(
                     text = meaning.definitions.example,
                     fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-
             }
         }
     }
