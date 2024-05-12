@@ -12,7 +12,6 @@ import data.response.FailedResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,20 +28,24 @@ class HomeViewModel(
 
     private val _insertedDictionary: MutableStateFlow<WordItemDTO?> =
         MutableStateFlow(null)
-    val insertedDictionary: StateFlow<WordItemDTO?> get() = _insertedDictionary
+    val insertedDictionary get() = _insertedDictionary.asStateFlow()
 
     private val _dictionaryDatabase: MutableStateFlow<List<WordItemDTO>> =
         MutableStateFlow(emptyList())
-    val dictionaryDatabase: StateFlow<List<WordItemDTO>> get() = _dictionaryDatabase
+    val dictionaryDatabase get() = _dictionaryDatabase.asStateFlow()
 
 
     private val _homeState = MutableStateFlow(HomeState())
-    private val _homeViewState: MutableStateFlow<HomeScreenState> = MutableStateFlow(HomeScreenState.Clear)
+
+    private val _homeViewState: MutableStateFlow<HomeScreenState> =
+        MutableStateFlow(HomeScreenState.Clear)
     val homeViewState = _homeViewState.asStateFlow()
 
+
+
     private suspend fun insertDictionary(dictionary: DictionaryResponse) {
-        val id = dictionaryDao.insert(dictionary.toWordItem())
-        getWordMeaningFromId(id.toInt())
+        val id = repository.insertDictionary(dictionary.toWordItem(), dictionaryDao)
+        getWordMeaningFromId(id)
     }
 
     fun getAllDictionarySearch() = viewModelScope.launch(Dispatchers.IO) {
@@ -54,6 +57,10 @@ class HomeViewModel(
         _insertedDictionary.value = dictionaryDao.getDictionaryById(id)
     }
 
+    private suspend fun wordExists(word: String): WordItemDTO? {
+        return repository.searchDictionary(word, dictionaryDao)
+    }
+
     fun clearStates() {
         Logger.d("Clearing states")
         _insertedDictionary.value = null
@@ -62,7 +69,13 @@ class HomeViewModel(
 
     suspend fun getDictionary(word: String) {
         Logger.d("Entered getDictionary")
-        getDictionaryFromApi(word)
+        val wordExists = wordExists(word)
+        if (wordExists != null) {
+            _homeViewState.value = HomeScreenState.Success(null)
+            _insertedDictionary.value = wordExists
+        } else {
+            getDictionaryFromApi(word)
+        }
     }
 
     private suspend fun getDictionaryFromApi(word: String) {
@@ -98,7 +111,8 @@ class HomeViewModel(
             }
         } catch (e: Exception) {
             Logger.d("Error: ${e.message}")
-            _homeViewState.value = HomeScreenState.Error(FailedResponse(message = e.message.toString()))
+            _homeViewState.value =
+                HomeScreenState.Error(FailedResponse(message = e.message.toString()))
         }
     }
 }

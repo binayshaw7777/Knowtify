@@ -26,4 +26,7 @@ interface DictionaryDao {
 
     @Query("DELETE FROM dictionary")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM dictionary WHERE word LIKE :queryWord")
+    suspend fun searchDictionary(queryWord: String): List<WordItemDTO>
 }

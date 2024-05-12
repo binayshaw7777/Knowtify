@@ -1,7 +1,6 @@
 package presentation.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,6 +40,7 @@ import navigation.Screens
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import presentation.component.LoadingProgressDialog
+import presentation.component.SearchBar
 import presentation.component.SearchedItem
 import presentation.home.states.HomeScreenState
 
@@ -111,8 +111,6 @@ fun HomeScreen(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            Logger.d("Is system in dark mode: ${isSystemInDarkTheme()}")
-
             LazyColumn(
                 modifier = Modifier.weight(9f),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -126,12 +124,12 @@ fun HomeScreen(
                 }
             }
 
-            presentation.component.SearchBar(
+            SearchBar(
                 search = searchBarQuery,
                 onValueChange = { searchBarQuery = it }
             ) {
                 scope.launch(Dispatchers.IO) {
-                    homeViewModel.getDictionary(searchBarQuery)
+                    homeViewModel.getDictionary(searchBarQuery.trim())
                     searchBarQuery = ""
                 }
             }

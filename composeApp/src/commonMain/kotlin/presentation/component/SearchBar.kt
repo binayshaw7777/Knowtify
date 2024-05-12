@@ -41,7 +41,6 @@ fun SearchBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(20.dp)
             .clip(CircleShape)
 
     ) {
@@ -63,7 +62,9 @@ fun SearchBar(
             trailingIcon = {
                 AnimatedVisibility(search.isNotEmpty()) {
                     IconButton(onClick = {
-                        onSearchClick()
+                        if (search.isNotEmpty()) {
+                            onSearchClick()
+                        }
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
@@ -76,8 +77,10 @@ fun SearchBar(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    keyboardController?.hide()
-                    onSearchClick()
+                    if (search.isNotEmpty()) {
+                        keyboardController?.hide()
+                        onSearchClick()
+                    }
                 }
             ),
             placeholder = {

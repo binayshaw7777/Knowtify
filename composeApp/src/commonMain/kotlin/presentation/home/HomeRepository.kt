@@ -19,4 +19,13 @@ class HomeRepository(
     suspend fun getWordMeaningFromId(dictionaryDao: DictionaryDao, id: Int): WordItemDTO? {
         return dictionaryDao.getDictionaryById(id)
     }
+
+    suspend fun insertDictionary(wordItem: WordItemDTO, dictionaryDao: DictionaryDao) : Int {
+        val id = dictionaryDao.insert(wordItem)
+        return id.toInt()
+    }
+
+    suspend fun searchDictionary(queryWord: String, dictionaryDao: DictionaryDao): WordItemDTO? {
+        return dictionaryDao.searchDictionary(queryWord).firstOrNull()
+    }
 }
