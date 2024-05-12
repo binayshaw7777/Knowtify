@@ -47,8 +47,7 @@ This project is a powerful and versatile dictionary app built using Compose, Kto
 - [📝 Kermit](https://github.com/touchlab/Kermit)
 
 ## Architecture:
-![image](https://github.com/binayshaw7777/Knowtify/assets/62587060/119262d3-9677-42b4-b249-761fb5bac044)
-
+![image](https://github.com/binayshaw7777/Knowtify/assets/62587060/942d977c-151f-49a1-be46-ffade986dfd1)
 
 ## Getting Started:
 
@@ -78,9 +77,26 @@ Build and run the project for your target platform (Android, Desktop, or iOS) fo
 - Room: An SQLite wrapper for local data persistence with an intuitive API.
 - Kotlin: A concise and expressive language for developing Android and other cross-platform applications.
 
+
 Screenshot:
 ![Banner](https://github.com/binayshaw7777/Knowtify/assets/62587060/b48dddc1-236c-441a-9593-37225aee9331)
 
 Recording:
 https://github.com/binayshaw7777/Knowtify/assets/62587060/f8d3ca1d-efdc-4345-90c5-2be1370c920a
 
+## License
+```
+Copyright 2024 Binay Shaw
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
