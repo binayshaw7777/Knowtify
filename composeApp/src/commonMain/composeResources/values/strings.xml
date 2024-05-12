@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">ComposeApp</string>
+    <string name="general">General</string>
+    <string name="theme">Theme</string>
+    <string name="about">About</string>
+    <string name="invite_others">Invite others</string>
+    <string name="licenses">Licenses</string>
+    <string name="setting">Setting</string>
+    <string name="home">Home</string>
+    <string name="detail">Detail</string>
+    <string name="delete_history">Delete history</string>
+    <string name="part_of_speech">Part of speech</string>
+    <string name="bullet">•</string>
+    <string name="back">Back</string>
+    <string name="goto_setting_screen">Goto Setting Screen</string>
+    <string name="search_any_word">Search any word</string>
+    <string name="mic">Mic</string>
+    <string name="send">Send</string>
+    <string name="go_back">Go back</string>
+    <string name="loading">Loading</string>
+    <string name="delete_history_description">Are you sure you want to delete history?</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+    <string name="delete">Delete</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="system_default">System Default</string>
+    <string name="choose_a_theme">Choose a theme</string>
+</resources>
