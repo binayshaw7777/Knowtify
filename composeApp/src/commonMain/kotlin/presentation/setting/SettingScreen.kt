@@ -64,7 +64,6 @@ fun Setting(
 
     var showThemeSelectionDialog by remember { mutableStateOf(false) }
     val isDarkModeEnabled by settingViewModel.isDarkModeEnabled.collectAsState()
-    val isSystemInDarkTheme = isSystemInDarkTheme()
     var showDeleteHistoryDialog by remember { mutableStateOf(false) }
 
     when {
@@ -105,7 +104,6 @@ fun Setting(
                     when (theme) {
                         Theme.Light -> settingViewModel.changeDarkMode(false)
                         Theme.Dark -> settingViewModel.changeDarkMode(true)
-                        Theme.System -> settingViewModel.changeDarkMode(isSystemInDarkTheme)
                     }
                     showThemeSelectionDialog = false
                 },
