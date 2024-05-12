@@ -3,7 +3,6 @@ package presentation.component
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -23,9 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import knowtify.composeapp.generated.resources.Res
 import knowtify.composeapp.generated.resources.search_any_word
+import knowtify.composeapp.generated.resources.send
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -68,7 +67,7 @@ fun SearchBar(
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "Send",
+                            contentDescription = stringResource(Res.string.send),
                             tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }

@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import co.touchlab.kermit.Logger
 import knowtify.composeapp.generated.resources.Res
+import knowtify.composeapp.generated.resources.goto_setting_screen
 import knowtify.composeapp.generated.resources.home
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -75,7 +76,6 @@ fun HomeScreen(
     }
 
     LaunchedEffect(insertedDictionary) {
-        Logger.d("Inserted Dictionary Response: $insertedDictionary")
         insertedDictionary?.let {
             Logger.d("Inserted Dictionary Response is not null and hence navigating: $it")
             navController.navigate("${Screens.Detail.route}/${it.id}")
@@ -94,7 +94,7 @@ fun HomeScreen(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 actions = {
                     IconButton(onClick = { navController.navigate(Screens.Setting.route) }) {
-                        Icon(Icons.Default.Settings, contentDescription = "Goto Setting Screen")
+                        Icon(Icons.Default.Settings, contentDescription = stringResource(Res.string.goto_setting_screen))
                     }
                 }
             )

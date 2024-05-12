@@ -18,6 +18,7 @@ import androidx.navigation.navArgument
 import presentation.detail.DetailScreen
 import presentation.home.HomeScreen
 import presentation.setting.Setting
+import util.Constant.MEANING_ID
 import util.FadeIn
 import util.FadeOut
 
@@ -54,11 +55,11 @@ fun Navigation() {
                 }
 
                 composable(
-                    route = "${Screens.Detail.route}/{meaningId}",
-                    arguments = listOf(navArgument("meaningId") { type = IntType })
+                    route = "${Screens.Detail.route}/{$MEANING_ID}",
+                    arguments = listOf(navArgument(MEANING_ID) { type = IntType })
                 ) {
 
-                    val meaningId: Int = backStackEntry.value?.arguments?.getInt("meaningId") ?: -1
+                    val meaningId: Int = backStackEntry.value?.arguments?.getInt(MEANING_ID) ?: -1
 
                     DetailScreen(meaningId = meaningId)
                 }

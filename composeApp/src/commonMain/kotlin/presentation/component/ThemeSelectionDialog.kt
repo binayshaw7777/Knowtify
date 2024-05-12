@@ -29,6 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import knowtify.composeapp.generated.resources.Res
+import knowtify.composeapp.generated.resources.apply
+import knowtify.composeapp.generated.resources.cancel
+import knowtify.composeapp.generated.resources.choose_a_theme
+import knowtify.composeapp.generated.resources.dark_mode
+import knowtify.composeapp.generated.resources.light_mode
+import knowtify.composeapp.generated.resources.system_default
+import org.jetbrains.compose.resources.stringResource
 import util.onClick
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +62,7 @@ fun ThemeSelectionDialog(
                 Column(modifier = Modifier.padding(16.dp)) {
 
                     Text(
-                        text = "Choose a theme",
+                        text = stringResource(Res.string.choose_a_theme),
                         style = TextStyle(fontSize = 20.sp),
                         modifier = Modifier.padding(8.dp)
                     )
@@ -72,7 +80,7 @@ fun ThemeSelectionDialog(
                                 selectedColor = MaterialTheme.colorScheme.primary
                             )
                         )
-                        Text(text = "System Default")
+                        Text(text = stringResource(Res.string.system_default))
                     }
 
                     Row(
@@ -88,7 +96,7 @@ fun ThemeSelectionDialog(
                                 selectedColor = MaterialTheme.colorScheme.primary
                             )
                         )
-                        Text(text = "Light Mode")
+                        Text(text = stringResource(Res.string.light_mode))
                     }
 
                     Row(
@@ -104,7 +112,7 @@ fun ThemeSelectionDialog(
                                 selectedColor = MaterialTheme.colorScheme.primary
                             )
                         )
-                        Text(text = "Dark Mode")
+                        Text(text = stringResource(Res.string.dark_mode))
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -114,11 +122,11 @@ fun ThemeSelectionDialog(
                         horizontalArrangement = Arrangement.End
                     ) {
                         TextButton(onClick = onDismissRequest) {
-                            Text(text = "Cancel")
+                            Text(text = stringResource(Res.string.cancel))
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         TextButton(onClick = { onThemeChange(currentSelectedTheme) }) {
-                            Text(text = "Apply")
+                            Text(text = stringResource(Res.string.apply))
                         }
                     }
                 }

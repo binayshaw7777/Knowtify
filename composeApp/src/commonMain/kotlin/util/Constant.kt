@@ -5,4 +5,9 @@ object Constant {
     const val TIMEOUT = 10000L
 
     const val APP_REPOSITORY = "https://github.com/binayshaw7777/Knowtify"
+    const val MEANING_ID = "meaningId"
+
+    const val HOME = "home"
+    const val SETTING = "setting"
+    const val DETAIL = "detail"
 }
