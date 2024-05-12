@@ -6,15 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.PeopleAlt
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,16 +35,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import co.touchlab.kermit.Logger
 import knowtify.composeapp.generated.resources.Res
-import knowtify.composeapp.generated.resources.about
 import knowtify.composeapp.generated.resources.cancel
 import knowtify.composeapp.generated.resources.delete
 import knowtify.composeapp.generated.resources.delete_history
 import knowtify.composeapp.generated.resources.delete_history_description
 import knowtify.composeapp.generated.resources.general
+import knowtify.composeapp.generated.resources.go_back
 import knowtify.composeapp.generated.resources.invite_others
-import knowtify.composeapp.generated.resources.licenses
 import knowtify.composeapp.generated.resources.setting
 import knowtify.composeapp.generated.resources.theme
 import navigation.LocalNavHost
@@ -106,7 +102,6 @@ fun Setting(
         showThemeSelectionDialog -> {
             ThemeSelectionDialog(
                 onThemeChange = { theme ->
-                    Logger.d("Theme changed to $theme")
                     when (theme) {
                         Theme.Light -> settingViewModel.changeDarkMode(false)
                         Theme.Dark -> settingViewModel.changeDarkMode(true)
@@ -129,7 +124,10 @@ fun Setting(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Go back")
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = stringResource(Res.string.go_back)
+                        )
                     }
                 }
             )
@@ -159,7 +157,6 @@ fun Setting(
                 item {
                     SettingItem(
                         onClick = {
-                            Logger.d("Clicked on theme")
                             showThemeSelectionDialog = true
                         },
                         imageVector = if (isSystemInDarkTheme()) Icons.Outlined.DarkMode else Icons.Outlined.LightMode,
@@ -168,26 +165,11 @@ fun Setting(
                 }
                 item {
                     SettingItem(
-                        onClick = { Logger.d("Clicked on about") },
-                        imageVector = Icons.Outlined.Info,
-                        itemName = stringResource(Res.string.about)
-                    )
-                }
-                item {
-                    SettingItem(
                         onClick = {
-                            Logger.d("Clicked on invite others")
                             uriHandler.openUri(APP_REPOSITORY)
                         },
                         imageVector = Icons.Outlined.PeopleAlt,
                         itemName = stringResource(Res.string.invite_others)
-                    )
-                }
-                item {
-                    SettingItem(
-                        onClick = { Logger.d("Clicked on licenses") },
-                        imageVector = Icons.Outlined.Book,
-                        itemName = stringResource(Res.string.licenses)
                     )
                 }
                 item {
