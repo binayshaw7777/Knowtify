@@ -6,22 +6,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -35,12 +29,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import co.touchlab.kermit.Logger
 import knowtify.composeapp.generated.resources.Res
 import knowtify.composeapp.generated.resources.home
-import knowtify.composeapp.generated.resources.search_any_word
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -62,7 +54,6 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
 
     var searchBarQuery by rememberSaveable { mutableStateOf("") }
-    var isSearchActive by rememberSaveable { mutableStateOf(false) }
 
     val dictionaryDatabase by homeViewModel.dictionaryDatabase.collectAsState()
 
@@ -135,57 +126,15 @@ fun HomeScreen(
                 }
             }
 
-
-            SearchBar(
-                modifier = Modifier.weight(1f).wrapContentSize(),
-                query = searchBarQuery,
-                onQueryChange = { searchBarQuery = it },
-                active = isSearchActive,
-                onActiveChange = { isSearchActive = false },
-                colors = SearchBarDefaults.colors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                    inputFieldColors = TextFieldDefaults.colors(MaterialTheme.colorScheme.onSecondaryContainer)
-                ),
-                onSearch = {
-                    Logger.d("Clicked on search")
-                    if (searchBarQuery.isNotEmpty()) {
-                        scope.launch(Dispatchers.IO) {
-                            homeViewModel.getDictionary(searchBarQuery)
-                            searchBarQuery = ""
-                        }
-                    }
-                },
-                placeholder = {
-                    Text(
-                        text = stringResource(Res.string.search_any_word),
-                        style = TextStyle(color = MaterialTheme.colorScheme.onSecondaryContainer)
-                    )
-                },
-                trailingIcon = {
-                    if (searchBarQuery.isEmpty()) {
-                        IconButton(onClick = {}) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "Mic",
-                                tint = MaterialTheme.colorScheme.onSecondaryContainer
-                            )
-                        }
-                    } else {
-                        IconButton(onClick = {
-                            scope.launch(Dispatchers.IO) {
-                                homeViewModel.getDictionary(searchBarQuery)
-                                searchBarQuery = ""
-                            }
-                        }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Send,
-                                contentDescription = "Send",
-                                tint = MaterialTheme.colorScheme.onSecondaryContainer
-                            )
-                        }
-                    }
+            presentation.component.SearchBar(
+                search = searchBarQuery,
+                onValueChange = { searchBarQuery = it }
+            ) {
+                scope.launch(Dispatchers.IO) {
+                    homeViewModel.getDictionary(searchBarQuery)
+                    searchBarQuery = ""
                 }
-            ) {}
+            }
         }
     }
 }

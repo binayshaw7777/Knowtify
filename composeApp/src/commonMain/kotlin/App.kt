@@ -1,8 +1,6 @@
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,7 +37,7 @@ fun App(
 
 @Composable
 fun MainContent() {
-    Box(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Navigation()
     }
 }

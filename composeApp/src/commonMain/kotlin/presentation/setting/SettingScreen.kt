@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Book
@@ -20,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -37,7 +39,10 @@ import androidx.compose.ui.unit.sp
 import co.touchlab.kermit.Logger
 import knowtify.composeapp.generated.resources.Res
 import knowtify.composeapp.generated.resources.about
+import knowtify.composeapp.generated.resources.cancel
+import knowtify.composeapp.generated.resources.delete
 import knowtify.composeapp.generated.resources.delete_history
+import knowtify.composeapp.generated.resources.delete_history_description
 import knowtify.composeapp.generated.resources.general
 import knowtify.composeapp.generated.resources.invite_others
 import knowtify.composeapp.generated.resources.licenses
@@ -60,22 +65,57 @@ fun Setting(
     var showThemeSelectionDialog by remember { mutableStateOf(false) }
     val isDarkModeEnabled by settingViewModel.isDarkModeEnabled.collectAsState()
     val isSystemInDarkTheme = isSystemInDarkTheme()
+    var showDeleteHistoryDialog by remember { mutableStateOf(false) }
 
-    if (showThemeSelectionDialog) {
-        ThemeSelectionDialog(
-            onThemeChange = { theme ->
-                Logger.d("Theme changed to $theme")
-                when (theme) {
-                    Theme.Light -> settingViewModel.changeDarkMode(false)
-                    Theme.Dark -> settingViewModel.changeDarkMode(true)
-                    Theme.System -> settingViewModel.changeDarkMode(isSystemInDarkTheme)
+    when {
+        showDeleteHistoryDialog -> {
+
+            AlertDialog(
+                onDismissRequest = { showDeleteHistoryDialog = false },
+                title = { Text(stringResource(Res.string.delete_history)) },
+                text = { Text(stringResource(Res.string.delete_history_description)) },
+                icon = {
+                    Icon(
+                        Icons.Outlined.Delete,
+                        contentDescription = stringResource(Res.string.delete_history)
+                    )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            settingViewModel.deleteHistory()
+                            showDeleteHistoryDialog = false
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Text(stringResource(Res.string.delete))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteHistoryDialog = false }) {
+                        Text(stringResource(Res.string.cancel))
+                    }
                 }
-                showThemeSelectionDialog = false
-            },
-            onDismissRequest = { showThemeSelectionDialog = false },
-            currentTheme = if (isDarkModeEnabled) Theme.Dark else Theme.Light
-        )
+            )
+        }
+        showThemeSelectionDialog -> {
+            ThemeSelectionDialog(
+                onThemeChange = { theme ->
+                    Logger.d("Theme changed to $theme")
+                    when (theme) {
+                        Theme.Light -> settingViewModel.changeDarkMode(false)
+                        Theme.Dark -> settingViewModel.changeDarkMode(true)
+                        Theme.System -> settingViewModel.changeDarkMode(isSystemInDarkTheme)
+                    }
+                    showThemeSelectionDialog = false
+                },
+                onDismissRequest = { showThemeSelectionDialog = false },
+                currentTheme = if (isDarkModeEnabled) Theme.Dark else Theme.Light
+            )
+        }
     }
+
+
 
     Scaffold(
         topBar = {
@@ -145,8 +185,7 @@ fun Setting(
                 item {
                     SettingItem(
                         onClick = {
-                            settingViewModel.deleteHistory()
-                            navController.popBackStack()
+                            showDeleteHistoryDialog = true
                         },
                         imageVector = Icons.Outlined.Delete,
                         itemName = stringResource(Res.string.delete_history),
