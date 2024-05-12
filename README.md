@@ -19,7 +19,7 @@ This project is a powerful and versatile dictionary app built using Compose, Kto
   </a>
   
   <a href="https://hits.sh/github.com/binayshaw7777/Knowtify/">
-      <img alt="Hits" src="https://hits.sh/github.com/binayshaw7777/Knowtify.svg?style=for-the-badge&label=Views&extraCount=7500&color=ff3f6f"/></a>
+      <img alt="Hits" src="https://hits.sh/github.com/binayshaw7777/Knowtify.svg?style=for-the-badge&label=Views&extraCount=0&color=ff3f6f"/></a>
   </a>
   
   <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/binayshaw7777/Knowtify?style=for-the-badge">
