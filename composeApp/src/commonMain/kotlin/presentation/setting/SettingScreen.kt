@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -54,6 +55,7 @@ import org.koin.compose.koinInject
 import presentation.component.SettingItem
 import presentation.component.Theme
 import presentation.component.ThemeSelectionDialog
+import util.Constant.APP_REPOSITORY
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,6 +64,8 @@ fun Setting(
 ) {
 
     val navController = LocalNavHost.current
+    val uriHandler = LocalUriHandler.current
+
     var showThemeSelectionDialog by remember { mutableStateOf(false) }
     val isDarkModeEnabled by settingViewModel.isDarkModeEnabled.collectAsState()
     val isSystemInDarkTheme = isSystemInDarkTheme()
@@ -98,6 +102,7 @@ fun Setting(
                 }
             )
         }
+
         showThemeSelectionDialog -> {
             ThemeSelectionDialog(
                 onThemeChange = { theme ->
@@ -170,7 +175,10 @@ fun Setting(
                 }
                 item {
                     SettingItem(
-                        onClick = { Logger.d("Clicked on invite others") },
+                        onClick = {
+                            Logger.d("Clicked on invite others")
+                            uriHandler.openUri(APP_REPOSITORY)
+                        },
                         imageVector = Icons.Outlined.PeopleAlt,
                         itemName = stringResource(Res.string.invite_others)
                     )
