@@ -10,6 +10,10 @@ This project is a powerful and versatile dictionary app built using Compose, Kto
 <p align="center">
   <img alt="API" src="https://img.shields.io/badge/Api%2021+-50f270?logo=android&logoColor=black&style=for-the-badge"/></a>
   
+  <a href="https://kotlinlang.org">
+      <img src="https://img.shields.io/badge/Kotlin-1.9.23-blue.svg?style=for-the-badge&logo=kotlin"/>
+  </a>
+  
   <a href="https://github.com/binayshaw7777/Knowtify/stargazers">
       <img src="https://img.shields.io/github/stars/binayshaw7777/Knowtify?color=ffff00&style=for-the-badge"/>
   </a>
