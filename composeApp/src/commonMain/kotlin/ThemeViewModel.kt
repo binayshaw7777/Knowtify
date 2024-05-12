@@ -6,22 +6,23 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import presentation.component.Theme
 import util.AppPreferences
 
 class ThemeViewModel(
     private val applicationPreferences: AppPreferences
-) : ViewModel(){
+) : ViewModel() {
 
-    private val _currentTheme = MutableStateFlow<Boolean>(false)
-    val currentTheme = _currentTheme.asStateFlow()
+    private val _currentAppTheme = MutableStateFlow<Theme>(Theme.System)
+    val currentAppTheme = _currentAppTheme.asStateFlow()
 
     init {
-        getTheme()
+        getAppTheme()
     }
 
-    private fun getTheme() = viewModelScope.launch(Dispatchers.IO) {
-        applicationPreferences.onDarkModeChange.collectLatest {
-            _currentTheme.value = it
+    private fun getAppTheme() = viewModelScope.launch(Dispatchers.IO) {
+        applicationPreferences.onAppThemeChange.collectLatest {
+            _currentAppTheme.value = it
         }
     }
 }

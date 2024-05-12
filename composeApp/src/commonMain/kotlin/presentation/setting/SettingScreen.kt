@@ -53,7 +53,6 @@ import navigation.LocalNavHost
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import presentation.component.SettingItem
-import presentation.component.Theme
 import presentation.component.ThemeSelectionDialog
 import util.Constant.APP_REPOSITORY
 
@@ -67,8 +66,7 @@ fun Setting(
     val uriHandler = LocalUriHandler.current
 
     var showThemeSelectionDialog by remember { mutableStateOf(false) }
-    val isDarkModeEnabled by settingViewModel.isDarkModeEnabled.collectAsState()
-    val isSystemInDarkTheme = isSystemInDarkTheme()
+    val appTheme by settingViewModel.appTheme.collectAsState()
     var showDeleteHistoryDialog by remember { mutableStateOf(false) }
 
     when {
@@ -107,15 +105,11 @@ fun Setting(
             ThemeSelectionDialog(
                 onThemeChange = { theme ->
                     Logger.d("Theme changed to $theme")
-                    when (theme) {
-                        Theme.Light -> settingViewModel.changeDarkMode(false)
-                        Theme.Dark -> settingViewModel.changeDarkMode(true)
-                        Theme.System -> settingViewModel.changeDarkMode(isSystemInDarkTheme)
-                    }
+                    settingViewModel.changeAppTheme(theme)
                     showThemeSelectionDialog = false
                 },
                 onDismissRequest = { showThemeSelectionDialog = false },
-                currentTheme = if (isDarkModeEnabled) Theme.Dark else Theme.Light
+                currentTheme = appTheme
             )
         }
     }

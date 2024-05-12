@@ -1,6 +1,5 @@
 package presentation.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -62,13 +60,14 @@ fun ThemeSelectionDialog(
                     )
 
                     Row(
-                        modifier = Modifier.fillMaxWidth().onClick { currentSelectedTheme = Theme.System},
+                        modifier = Modifier.fillMaxWidth()
+                            .onClick { currentSelectedTheme = Theme.System },
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
                             selected = currentSelectedTheme == Theme.System,
-                            onClick = { currentSelectedTheme = Theme.System},
+                            onClick = { currentSelectedTheme = Theme.System },
                             colors = RadioButtonDefaults.colors(
                                 selectedColor = MaterialTheme.colorScheme.primary
                             )
@@ -77,13 +76,14 @@ fun ThemeSelectionDialog(
                     }
 
                     Row(
-                        modifier = Modifier.fillMaxWidth().onClick { currentSelectedTheme = Theme.Light },
+                        modifier = Modifier.fillMaxWidth()
+                            .onClick { currentSelectedTheme = Theme.Light },
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
                             selected = currentSelectedTheme == Theme.Light,
-                            onClick = { currentSelectedTheme = Theme.Light},
+                            onClick = { currentSelectedTheme = Theme.Light },
                             colors = RadioButtonDefaults.colors(
                                 selectedColor = MaterialTheme.colorScheme.primary
                             )
@@ -92,7 +92,8 @@ fun ThemeSelectionDialog(
                     }
 
                     Row(
-                        modifier = Modifier.fillMaxWidth().onClick { currentSelectedTheme = Theme.Dark },
+                        modifier = Modifier.fillMaxWidth()
+                            .onClick { currentSelectedTheme = Theme.Dark },
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -126,6 +127,17 @@ fun ThemeSelectionDialog(
     )
 }
 
-enum class Theme {
-    System, Light, Dark
+enum class Theme(val id: Int) {
+    System(0), Light(1), Dark(2);
+
+    companion object {
+        fun fromId(id: Int): Theme {
+            return when (id) {
+                0 -> System
+                1 -> Light
+                2 -> Dark
+                else -> System
+            }
+        }
+    }
 }

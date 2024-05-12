@@ -12,6 +12,7 @@ import navigation.Navigation
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
+import presentation.component.Theme
 import ui.KnowtifyTheme
 
 @Composable
@@ -25,10 +26,16 @@ fun App(
         modules(appModule(databaseBuilder))
     }) {
         val themeViewModel: ThemeViewModel = koinInject()
-        val isDarkModeEnabled by themeViewModel.currentTheme.collectAsState(isSystemInDarkTheme())
+        val appTheme by themeViewModel.currentAppTheme.collectAsState(isSystemInDarkTheme())
 
         KnowtifyTheme(
-            darkTheme = isDarkModeEnabled
+            darkTheme = when (appTheme) {
+                Theme.Dark -> true
+                Theme.Light -> false
+                else -> {
+                    isSystemInDarkTheme()
+                }
+            }
         ) {
             MainContent()
         }

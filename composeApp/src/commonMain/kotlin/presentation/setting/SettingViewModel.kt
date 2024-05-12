@@ -9,6 +9,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import presentation.component.Theme
 import util.AppPreferences
 
 class SettingViewModel(
@@ -20,24 +21,23 @@ class SettingViewModel(
 
     private val dictionaryDao: DictionaryDao = dictionaryDatabase.dictionaryDao()
 
-    private val _isDarkModeEnabled = MutableStateFlow<Boolean>(false)
-    val isDarkModeEnabled = _isDarkModeEnabled.asStateFlow()
+    private val _appTheme = MutableStateFlow(Theme.System)
+    val appTheme = _appTheme.asStateFlow()
 
     fun deleteHistory() = viewModelScope.launch(Dispatchers.IO) {
         settingRepository.deleteAllDictionarySearch(dictionaryDao)
     }
 
-
     init {
-        isDarkModeEnabled()
+        getAppTheme()
     }
 
-    private fun isDarkModeEnabled() = viewModelScope.launch(Dispatchers.IO) {
-        _isDarkModeEnabled.value = appPreferences.isDarkModeEnabled()
+    private fun getAppTheme() = viewModelScope.launch(Dispatchers.IO) {
+        _appTheme.value = appPreferences.getAppTheme()
     }
 
-    fun changeDarkMode(isEnabled: Boolean) = viewModelScope.launch(Dispatchers.IO) {
-        appPreferences.changeDarkMode(isEnabled)
-        _isDarkModeEnabled.value = isEnabled
+    fun changeAppTheme(theme: Theme) = viewModelScope.launch(Dispatchers.IO) {
+        appPreferences.changeAppTheme(theme)
+        _appTheme.value = theme
     }
 }
