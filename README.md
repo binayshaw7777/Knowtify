@@ -58,7 +58,7 @@ Prerequisites:
   
 ## Clone the Project:
 ```Bash
-git clone https://github.com/your-username/your-project-name.git
+git clone https://github.com/binayshaw7777/Knowtify.git
 ```
 
 - Running the App:
