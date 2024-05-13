@@ -78,11 +78,14 @@ Build and run the project for your target platform (Android, Desktop, or iOS) fo
 - Kotlin: A concise and expressive language for developing Android and other cross-platform applications.
 
 
-Screenshot:
+## Screenshot:
+
 ![Banner](https://github.com/binayshaw7777/Knowtify/assets/62587060/b48dddc1-236c-441a-9593-37225aee9331)
 
-Recording:
-https://github.com/binayshaw7777/Knowtify/assets/62587060/f8d3ca1d-efdc-4345-90c5-2be1370c920a
+## Recording:
+
+![1st with optm](https://github.com/binayshaw7777/Knowtify/assets/62587060/922327d4-15ab-4ddf-a95b-1187b082e274)
+
 
 ## License
 ```
